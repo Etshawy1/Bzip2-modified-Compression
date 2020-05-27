@@ -1,5 +1,9 @@
 #include "BWT_encode.h"
 #include "BWT_decode.h"
+#include "MTF_encode.h"
+#include "MTF_decode.h"
+#include "LZW_encode.h"
+#include "LZW_decode.h"
 
 #include <iostream>
 #include <string>
@@ -36,7 +40,7 @@ int main(int argc, char *argv[])
   string outputText = execute(o.encoding, o.algorithm, inputText);
   writeOutput(o.outputFile, outputText);
 
-  if (o.algorithm == "lzw")
+  if (o.algorithm == "lzw" && o.encoding)
     cout << "Compression Ratio = " << inputText.size() * 1.0 / outputText.size() << endl;
   return 0;
 }
@@ -61,7 +65,7 @@ operation arg_validations(int argc, char *argv[])
     copyright();
     exit(-2);
   }
-  if (strcmp(argv[1], "bwt") && strcmp(argv[1], "mft") && strcmp(argv[1], "lzw"))
+  if (strcmp(argv[1], "bwt") && strcmp(argv[1], "mtf") && strcmp(argv[1], "lzw"))
   {
     usage();
     copyright();
@@ -104,11 +108,19 @@ string execute(bool encoding, string algorithm, string &input)
   {
     if (algorithm == "bwt")
       outputText = BWTencode(input);
+    else if (algorithm == "mtf")
+      outputText = MTFencode(input);
+    else
+      outputText = LZWencode(input);
   }
   else
   {
     if (algorithm == "bwt")
       outputText = BWTdecode(input);
+    else if (algorithm == "mtf")
+      outputText = MTFdecode(input);
+    else
+      outputText = LZWdecode(input);
   }
   // Get ending timepoint
   auto stop = high_resolution_clock::now();

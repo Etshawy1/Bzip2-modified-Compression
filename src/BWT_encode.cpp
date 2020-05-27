@@ -121,7 +121,7 @@ void suffixArray(int *T, int *SA, int n, int K)
   delete[] R0;
 }
 
-string BWTencode(string t)
+string BWTencode(string &t)
 {
   int suffsize = t.size() + 1000;
   int *txt = new int[suffsize];
