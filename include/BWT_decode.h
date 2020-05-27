@@ -6,4 +6,4 @@
 
 using namespace std;
 string invert(string &bwt_arr, long long index);
-string BWTdecode(string t);
+string BWTdecode(string &t);

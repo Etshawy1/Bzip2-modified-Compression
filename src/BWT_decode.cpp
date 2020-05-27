@@ -48,7 +48,7 @@ string invert(string &bwt_arr, long long index)
   return s;
 }
 
-string BWTdecode(string t)
+string BWTdecode(string &t)
 {
   int indexTerminatingChar = t.find("\n");
   string s_index = t.substr(0, indexTerminatingChar);

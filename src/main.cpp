@@ -6,8 +6,12 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
+ifstream inputFile;
+ofstream ofile;
 
 struct operation
 {
@@ -57,45 +61,45 @@ operation arg_validations(int argc, char *argv[])
     copyright();
     exit(-2);
   }
-
   if (strcmp(argv[1], "bwt") && strcmp(argv[1], "mft") && strcmp(argv[1], "lzw"))
   {
     usage();
     copyright();
     exit(-2);
   }
-
   if (strcmp(argv[2], "-e") && strcmp(argv[2], "-d"))
   {
     usage();
     copyright();
     exit(-2);
   }
-
   return operation{argv[1], argv[3], argv[4], argv[2][1] == 'e'};
 }
 
 string readInput(string filename)
 {
   string inputText = "";
-  string line;
-  ifstream infile;
-  infile.open(filename, ios::in | ios::binary);
-  if (!infile.is_open())
+  string line = "";
+  inputFile.open(filename, ios::in | ios::binary);
+  if (!inputFile.is_open())
   {
     cout << "couldn't open input file\n";
     exit(-1);
   }
-  while (getline(infile, line))
+  cout << "reading input from file...\n";
+  while (getline(inputFile, line))
     inputText += (line + "\n");
   inputText.pop_back();
-  infile.close();
+  inputFile.close();
   return inputText;
 }
 
 string execute(bool encoding, string algorithm, string &input)
 {
+  // Get starting timepoint
+  auto start = high_resolution_clock::now();
   string outputText = "";
+  cout << "executing algorithm...\n";
   if (encoding)
   {
     if (algorithm == "bwt")
@@ -106,18 +110,28 @@ string execute(bool encoding, string algorithm, string &input)
     if (algorithm == "bwt")
       outputText = BWTdecode(input);
   }
+  // Get ending timepoint
+  auto stop = high_resolution_clock::now();
+  // Get duration. Substart timepoints to
+  // get durarion. To cast it to proper unit
+  // use duration cast method
+  auto duration = duration_cast<milliseconds>(stop - start);
+
+  cout << "Time taken by algorithm: "
+       << duration.count() << " milliseconds" << endl;
+
   return outputText;
 }
 
 void writeOutput(string filename, string &outputText)
 {
-  ofstream ofile;
   ofile.open(filename, ios::out | ios::binary);
   if (!ofile.is_open())
   {
     cout << "couldn't open output file\n";
     exit(-1);
   }
+  cout << "writing output to file...\n";
   ofile << outputText;
   ofile.close();
 }
