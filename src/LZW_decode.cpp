@@ -1,39 +1,37 @@
 #include "LZW_decode.h"
 
-string decoding(vector<unsigned int> op)
+string decoding(vector<unsigned int> inputIndeces)
 {
-  unordered_map<unsigned int, string> table;
+  unordered_map<unsigned int, string> dictionary;
   for (int i = 0; i <= 255; i++)
-  {
-    string ch = "";
-    ch += char(i);
-    table[i] = ch;
-  }
-  int old = op[0], n;
-  string s = table[old];
+    dictionary[i] = string(1, char(i));
+
+  int old = inputIndeces[0];
+  int currentIndex;
+  string s = dictionary[old];
   string c = "";
-  string decodedOutput;
+  string decodedOutput = "";
   c += s[0];
   decodedOutput += s;
   int count = 256;
-  for (int i = 0; i < op.size() - 1; i++)
+  for (int i = 0; i < inputIndeces.size() - 1; i++)
   {
-    n = op[i + 1];
-    if (table.find(n) == table.end())
+    currentIndex = inputIndeces[i + 1];
+    if (dictionary.find(currentIndex) == dictionary.end())
     {
-      s = table[old];
-      s = s + c;
+      s = dictionary[old];
+      s += c;
     }
     else
     {
-      s = table[n];
+      s = dictionary[currentIndex];
     }
     decodedOutput += s;
     c = "";
     c += s[0];
-    table[count] = table[old] + c;
+    dictionary[count] = dictionary[old] + c;
     count++;
-    old = n;
+    old = currentIndex;
   }
   return decodedOutput;
 }

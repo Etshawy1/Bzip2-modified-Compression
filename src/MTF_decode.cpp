@@ -2,8 +2,6 @@
 
 string MTFdecode(string enc)
 {
-
-  cout << enc.size() << endl;
   forward_list<char> alphabet;
   for (size_t i = 0; i < 256; i++)
   {
