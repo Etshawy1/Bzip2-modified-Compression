@@ -35,7 +35,7 @@ vector<unsigned int> encoding(string &s)
   return output_code;
 }
 
-string LZWencode(string &s)
+string LZWencode(string s)
 {
   vector<unsigned int> indeces = encoding(s);
   string outputString(BYTES_PER_INDEX * indeces.size(), '.');

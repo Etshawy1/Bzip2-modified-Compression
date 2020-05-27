@@ -7,4 +7,4 @@
 #include <string>
 using namespace std;
 
-string MTFdecode(string &enc);
+string MTFdecode(string enc);

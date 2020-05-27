@@ -49,7 +49,8 @@ void usage()
 {
   cerr << "\nEncoding Usage: Algorithm -e infile outfile\n";
   cerr << "Decoding Usage: Algorithm -d infile outfile\n";
-  cerr << "where Algorithms supported are {bwt, mft, lzw}\n";
+  cerr << "where Algorithms supported are {bwt, mft, lzw, combo}\n";
+  cerr << "combo does (bwt then mft then lzw) for encoding and reverse order for decoding\n";
 }
 
 void copyright()
@@ -65,7 +66,7 @@ operation arg_validations(int argc, char *argv[])
     copyright();
     exit(-2);
   }
-  if (strcmp(argv[1], "bwt") && strcmp(argv[1], "mtf") && strcmp(argv[1], "lzw"))
+  if (strcmp(argv[1], "bwt") && strcmp(argv[1], "mtf") && strcmp(argv[1], "lzw") && strcmp(argv[1], "combo"))
   {
     usage();
     copyright();
@@ -110,8 +111,10 @@ string execute(bool encoding, string algorithm, string &input)
       outputText = BWTencode(input);
     else if (algorithm == "mtf")
       outputText = MTFencode(input);
-    else
+    else if (algorithm == "lzw")
       outputText = LZWencode(input);
+    else
+      outputText = LZWencode(MTFencode(BWTencode(input)));
   }
   else
   {
@@ -119,8 +122,10 @@ string execute(bool encoding, string algorithm, string &input)
       outputText = BWTdecode(input);
     else if (algorithm == "mtf")
       outputText = MTFdecode(input);
-    else
+    else if (algorithm == "lzw")
       outputText = LZWdecode(input);
+    else
+      outputText = BWTdecode(MTFdecode(LZWdecode(input)));
   }
   // Get ending timepoint
   auto stop = high_resolution_clock::now();

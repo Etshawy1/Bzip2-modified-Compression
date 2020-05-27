@@ -38,7 +38,7 @@ string decoding(vector<unsigned int> op)
   return decodedOutput;
 }
 
-string LZWdecode(string &s)
+string LZWdecode(string s)
 {
 
   vector<unsigned int> indeces(s.size() / BYTES_PER_INDEX);

@@ -7,4 +7,4 @@
 #include <string>
 using namespace std;
 
-string MTFencode(string &source);
+string MTFencode(string source);

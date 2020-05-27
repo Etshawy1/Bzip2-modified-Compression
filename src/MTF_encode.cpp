@@ -1,6 +1,6 @@
 #include "MTF_encode.h"
 
-string MTFencode(string &source)
+string MTFencode(string source)
 {
   forward_list<char> alphabet;
   for (size_t i = 0; i < 256; i++)

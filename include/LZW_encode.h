@@ -10,4 +10,4 @@
 using namespace std;
 
 vector<unsigned int> encoding(string &s);
-string LZWencode(string &s);
+string LZWencode(string s);

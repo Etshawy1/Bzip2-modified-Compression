@@ -1,6 +1,6 @@
 #include "MTF_decode.h"
 
-string MTFdecode(string &enc)
+string MTFdecode(string enc)
 {
 
   cout << enc.size() << endl;
