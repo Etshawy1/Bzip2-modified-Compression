@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   string outputText = execute(o.encoding, o.algorithm, inputText);
   writeOutput(o.outputFile, outputText);
 
-  if (o.algorithm == "lzw" && o.encoding)
+  if ((o.algorithm == "lzw" || o.algorithm == "combo") && o.encoding)
     cout << "Compression Ratio = " << inputText.size() * 1.0 / outputText.size() << endl;
   return 0;
 }
