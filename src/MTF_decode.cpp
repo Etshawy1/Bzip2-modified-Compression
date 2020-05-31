@@ -2,10 +2,10 @@
 
 string MTFdecode(string enc)
 {
-  forward_list<char> alphabet;
+  forward_list<char> symbolSet;
   for (size_t i = 0; i < 256; i++)
   {
-    alphabet.push_front(i);
+    symbolSet.push_front(i);
   }
 
   vector<int> encoding(enc.size());
@@ -15,27 +15,27 @@ string MTFdecode(string enc)
   }
 
   string source(encoding.size(), '.');
-  int source_index = 0;
+  int sourceIndex = 0;
 
-  if (alphabet.begin() != alphabet.end())
+  if (symbolSet.begin() != symbolSet.end())
   {
-    for (vector<int>::iterator index = encoding.begin(); index != encoding.end(); index++)
+    for (auto index = encoding.begin(); index != encoding.end(); index++)
     {
       if (*index != 0)
       {
-        forward_list<char>::iterator character = next(alphabet.begin(), (*index) - 1);
-        forward_list<char>::iterator next_character = next(character, 1);
+        auto symbol = next(symbolSet.begin(), (*index) - 1);
+        auto nextSymbol = next(symbol, 1);
 
-        //Append the character at index in the alphabet to the source text
-        source[source_index++] = *next_character;
+        //Append the symbol at index in the symbolSet to the source text
+        source[sourceIndex++] = *nextSymbol;
 
         //Move the element at index to the front
-        alphabet.push_front(*next_character);
-        alphabet.erase_after(character);
+        symbolSet.push_front(*nextSymbol);
+        symbolSet.erase_after(symbol);
       }
       else
       {
-        source[source_index++] = *(alphabet.begin());
+        source[sourceIndex++] = *(symbolSet.begin());
       }
     }
   }

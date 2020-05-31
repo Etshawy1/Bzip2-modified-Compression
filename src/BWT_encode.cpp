@@ -123,7 +123,7 @@ void suffixArray(int *T, int *SA, int n, int K)
 
 string BWTencode(string t)
 {
-  int suffsize = t.size() + 1000;
+  int suffsize = t.size() + 3;
   int *txt = new int[suffsize];
   for (size_t i = 0; i < suffsize; i++)
   {
@@ -139,7 +139,11 @@ string BWTencode(string t)
     suff[i] = 0;
   }
   suffixArray(txt, suff, t.size() + 1, 256);
+
   string s(t.size() + 1, '.');
+
+  // to store the index of the occurence of the terminating character which
+  // I chose to be char with ascii 1 to be smaller than all other letters
   unsigned int index;
   for (size_t i = 0; i < t.size() + 1; i++)
   {
@@ -153,6 +157,7 @@ string BWTencode(string t)
   }
   delete[] suff;
   delete[] txt;
+
   string out = to_string(index);
   out += "\n";
   out += s;

@@ -1,48 +1,41 @@
 #include "BWT_decode.h"
 
-string invert(string &bwt_arr, long long index)
+string invert(string &BWTArray, long long index)
 {
-  int len_bwt = bwt_arr.size();
-  vector<unsigned char> sorted_bwt(len_bwt);
-  for (size_t i = 0; i < len_bwt; i++)
-    sorted_bwt[i] = (reinterpret_cast<unsigned char &>(bwt_arr[i]));
+  int BWTLength = BWTArray.size();
+  vector<unsigned char> BWTSortedArray(BWTLength);
+  for (size_t i = 0; i < BWTLength; i++)
+    BWTSortedArray[i] = (reinterpret_cast<unsigned char &>(BWTArray[i]));
 
-  vector<int> l_shift;
+  vector<int> shift;
 
-  // Index at which original string appears
-  // in the sorted rotations list
+  // Index at which the terminating character occurs
   unsigned int x = index;
 
-  // Sorts the characters of bwt_arr[] alphabetically
-  sort(sorted_bwt.begin(), sorted_bwt.end());
+  // Sorts the characters of BWTArray[] alphabetically
+  sort(BWTSortedArray.begin(), BWTSortedArray.end());
 
-  // vector of vectors created to compute l_shift[]
+  // vector of vectors created to compute shift[]
   vector<vector<int>> arr(256);
   vector<int> pos(256, 0);
 
-  // Takes each distinct character of bwt_arr[] as head
-  // of a vector and appends to it the index at which
-  // character occurs in bwt_arr[]
-  for (size_t i = 0; i < len_bwt; i++)
-  {
-    arr[reinterpret_cast<unsigned char &>(bwt_arr[i])].push_back(i);
-  }
+  for (size_t i = 0; i < BWTLength; i++)
+    arr[reinterpret_cast<unsigned char &>(BWTArray[i])].push_back(i);
 
   // Takes each distinct character of sorted_arr[] as head
-  // of a vector and finds l_shift[]
-  for (size_t i = 0; i < len_bwt; i++)
+  // of a vector and finds shift[]
+  for (size_t i = 0; i < BWTLength; i++)
   {
-    unsigned char currentChar = reinterpret_cast<unsigned char &>(sorted_bwt[i]);
-    l_shift.push_back(arr[currentChar][pos[currentChar]++]);
+    unsigned char currentChar = BWTSortedArray[i];
+    shift.push_back(arr[currentChar][pos[currentChar]++]);
   }
 
   // Decodes the bwt
-
-  string s(len_bwt, '.');
-  for (size_t i = 0; i < len_bwt; i++)
+  string s(BWTLength, '.');
+  for (size_t i = 0; i < BWTLength; i++)
   {
-    x = l_shift[x];
-    s[i] = bwt_arr[x];
+    x = shift[x];
+    s[i] = BWTArray[x];
   }
   s.pop_back();
   return s;

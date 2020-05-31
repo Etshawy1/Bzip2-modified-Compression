@@ -2,47 +2,44 @@
 
 string MTFencode(string source)
 {
-  forward_list<char> alphabet;
+  forward_list<char> symbolSet;
   for (size_t i = 0; i < 256; i++)
   {
-    alphabet.push_front(i);
+    symbolSet.push_front(i);
   }
   vector<int> encoding;
 
-  //Parameter checking
-  if (alphabet.begin() != alphabet.end())
+  if (symbolSet.begin() != symbolSet.end())
   {
-    for (string::iterator c = source.begin(); c != source.end(); c++)
+    for (auto it = source.begin(); it != source.end(); it++)
     {
-      //Search the alphabet for the index of the letter in source
+      //Search the symbolSet for the index of the character
       int index = 0;
       bool found = false;
-      forward_list<char>::iterator character = alphabet.begin();
-      forward_list<char>::iterator next_character = next(alphabet.begin(), 1);
+      auto symbol = symbolSet.begin();
+      auto nextSymbol = next(symbolSet.begin(), 1);
 
-      if (*character != *c)
+      if (*symbol != *it)
       {
-        while (!found && next_character != alphabet.end())
+        while (!found && nextSymbol != symbolSet.end())
         {
           index++;
-          if (*next_character == *c)
-          {
+          if (*nextSymbol == *it)
             found = true;
-          }
           else
           {
-            character++;
-            next_character++;
+            symbol++;
+            nextSymbol++;
           }
         }
-        //Move the element at index to the front of the list
-        alphabet.erase_after(character);
-        alphabet.push_front(*c);
+        symbolSet.erase_after(symbol);
+        symbolSet.push_front(*it);
       }
-      //Add the index to the integer sequence encoding
       encoding.push_back(index);
     }
   }
+
+  // convert the output to string to be written in file
   string s(encoding.size(), '.');
   for (size_t i = 0; i < encoding.size(); i++)
   {
