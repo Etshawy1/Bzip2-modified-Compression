@@ -12,7 +12,7 @@ you need to have `g++` compiler and `make` installed on your machine.
 
 ### Building the code
 
-enter either of the following commands
+enter the following commands
 
     make
 
