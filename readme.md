@@ -28,7 +28,7 @@ enter either of the following commands
 
     ./bin/main combo -e enwik8 encoded.bin
 
-    ./bin/main combo -e encoded.bin decoded.txt
+    ./bin/main combo -d encoded.bin decoded.txt
 
 ## License
 
